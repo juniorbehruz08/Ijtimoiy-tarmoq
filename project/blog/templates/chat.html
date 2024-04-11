@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block main %}
+<div class="container-fluid d-flex justify-content-end">
+    <p style="font-size:50px; margin-top:40px; margin-right:320px" class="text-center text-bold-medium">ALL CHATS</p>
+    <p style="font-size:50px; margin-top:40px;" class="text-center text-bold-medium">ADD CHATS</p>
+    <button type="submit" class="btn btn-success rounded mt-5 mb-5" style="margin-left:10px; margin-right:150px">
+        <a href="{% url 'add_chat' %}" class="text-white" style="font-size:25px">+</a>
+    </button>
+</div>
+<div class="col-12">
+    <div class="card-body">
+        <div class="section-title">
+            <div><a href="{% url 'saved_message' %}"><img src="https://static10.tgstat.ru/channels/_0/31/31324acfc838ed6e6add64460e46148d.jpg" style="width:120px; height:120px; border-radius:120px" alt=""></a></div>
+            <h1 class="font-weight-bold" style="margin-right:1000px"><a href="{% url 'saved_message' %}">Saved Messages</a></h1><br>
+        </div>
+    </div>
+</div>
+{% for i in chats %}
+
+<div class="col-12">
+    <div class="card-body">
+        <div class="section-title">
+            {% if request.user == i.user1 %}
+            <div><a href="{% url 'message' i.slug %}"><img src="{% if i.user2.photos.first.photo.url %}{{ i.user2.photos.first.photo.url }}{% else %}https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png{% endif %}" style="width:120px; height:120px; border-radius:120px" alt=""></a></div>
+            <h1 class="font-weight-bold" style="margin-right:1000px"><a href="{% url 'message' i.slug %}">{{ i.user2 }}</a><br>
+                <h1><a style="margin-right:100px" href="{% url 'delete_chat' i.slug %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                    </svg>
+                </a></h1></h1>
+            {% else %}
+            <div><a href="{% url 'message' i.slug %}"><img src="{% if i.user1.photos.first.photo.url %}{{ i.user1.photos.first.photo.url }}{% else %}https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png{% endif %}" style="width:120px; height:120px; border-radius:120px" alt=""></a></div>
+            <h1 class="font-weight-bold" style="margin-right:1000px"><a href="{% url 'message' i.slug %}">{{ i.user1 }}</a><br>
+                <h1><a style="margin-right:100px" href="{% url 'delete_chat' i.slug %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                    </svg>
+                </a></h1></h1>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock main %}

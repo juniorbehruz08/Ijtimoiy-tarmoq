@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% include 'components/link.html' %}
+    <title>{{ title }}</title>
+</head>
+<body>
+<div class="container" style="margin-top:350px">
+    {% if title == 'DELETE | CHAT' %}
+    <h1 style="font-size:70px" class="text-center">
+        Are you really delete this chat
+    </h1>
+    {% elif title == 'DELETE | ARTICLE' %}
+    <h1 style="font-size:70px" class="text-center">
+        Are you really delete this article
+    </h1>
+    {% else %}
+    <h1 style="font-size:70px" class="text-center">
+        Are you really exit your account
+    </h1>
+    {% endif %}
+    <div class="text-center">
+        <a href="?action=yes">
+            <button style="font-size:30px; width:120px; margin-right:20px" type="submit" class="btn btn-danger rounded">
+                Yes
+            </button>
+        </a>
+        <a href="?action=no">
+            <button style="font-size:30px; width:120px; margin-left:20px" class="btn btn-success rounded">
+                No
+            </button>
+        </a>
+    </div>
+</div>
+</body>
+</html>

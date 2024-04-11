@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+{% for category in categories %}
+<div class="col-12">
+    <div class="card-body">
+        <div class="section-title">
+            <div>
+                <a href="{% url 'category_page' category.slug %}">
+                    <img src="{{ category.get_photo }}" alt="">
+                </a>
+            </div>
+            <h1 class="m-0 text-uppercase font-weight-bold"><a href="{% url 'category_page' category.slug %}">Category: {{ category.title }}</a><br>
+                <h1><a href="{% url 'category_page' category.slug %}">Total Articles: {{ category.get_count }}</a></h1></h1>
+            <a class="text-dark font-weight-medium text-decoration-none" href=""></a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock main %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block main %}
+<p class="p-1"></p>
+{% for user in users %}
+<div class="col-12">
+    <div class="card-body">
+        <div class="section-title">
+            {% if request.user != i %}
+            <h1 class="font-weight-bold" style="margin-left:100px"><a href="?user={{ user }}">{{ user }}</a><br>
+                <h1><a href=""></a></h1></h1>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock main %}

@@ -1,0 +1,26 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% include 'components/link.html' %}
+    <title>Register</title>
+</head>
+<body>
+<p class="text-center" style="font-size:50px; margin-top:50px; font-weight:bold">Registration</p>
+<p class="text-center text-danger" style="font-size:35px; margin-top:50px; font-weight:bold">{{ text }}</p>
+<div class="container mt-5 mb-5">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success rounded">REGISTER</button>
+    </form>
+    <button class="btn btn-success mt-3 rounded" type="button">
+        <a class="text-white" href="{% url 'index' %}">Do you have an account</a>
+    </button>
+</div>
+</body>
+</html>

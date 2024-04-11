@@ -1,0 +1,27 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Google Web Fonts -->
+    {% include 'components/link.html' %}
+    <title>Login</title>
+</head>
+<body>
+<p class="text-center" style="margin-top:100px; font-size:50px; font-weight:bold">Login</p>
+<div style="margin-top:90px" class="container mb-5 p-5">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success rounded">LOGIN</button>
+    </form>
+    <button class="btn btn-success mt-3 rounded" type="button">
+        <a class="text-white" href="{% url 'register' %}">Do you not have an account</a>
+    </button>
+</div>
+</body>
+</html>

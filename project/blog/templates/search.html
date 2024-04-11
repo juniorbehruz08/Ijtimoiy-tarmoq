@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+<div class="container" style="margin-top:200px">
+    <div class="container-fluid mt-5 pt-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="section-title">
+                                <h4 class="m-0 text-uppercase font-weight-bold">Search result</h4>
+                                <a class="text-secondary text-uppercase font-weight-medium text-decoration-none"
+                                   href="">TOTAL: {{ total }} Articles</a>
+                            </div>
+                        </div>
+                        {% for article in articles %}
+                        <div class="col-lg-6">
+                            <div class="position-relative mb-3">
+                                <img class="img-fluid w-100" src="{{ article.get_photo }}"
+                                     style="object-fit: cover; height:350px;">
+                                <div class="bg-white border border-top-0 p-4">
+                                    <div class="mb-2">
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                           href="{% url 'category_page' article.category.slug %}">{{ article.category }}</a>
+                                        <a class="text-body" href="{% url 'article_detail' article.slug %}"><small>{{ article.created_date }}</small></a>
+                                    </div>
+                                    <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold"
+                                       href="{% url 'article_detail' article.slug %}">{{ article.title|truncatechars_html:15 }}</a>
+                                    <p class="m-0">{{ article.content|truncatechars_html:25 }}</p>
+                                </div>
+                                <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                                    <div class="d-flex align-items-center">
+                                        <a href="{% url 'view_account' article.user.username %}">
+                                            <img class="rounded-circle mr-2" src="{{ article.user.photos.first.photo.url }}" width="25" height="25" alt="">
+                                        </a>
+                                        <a style="color:grey"
+                                           href="{% url 'view_account' article.user.username %}"><small>{{ article.user.username }}</small></a>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <small class="ml-3"><i class="far fa-eye mr-2"></i>{{ article.views }}</small>
+                                        <small class="ml-3"><i class="far fa-comment mr-2"></i>{{ article.get_comment_count }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- Social Follow Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Follow Us</h4>
+                        </div>
+                        <div class="bg-white border border-top-0 p-3">
+                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3"
+                               style="background: #39569E;">
+                                <i class="fab fa-facebook-f text-center py-4 mr-3"
+                                   style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Fans</span>
+                            </a>
+                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3"
+                               style="background: #52AAF4;">
+                                <i class="fab fa-twitter text-center py-4 mr-3"
+                                   style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Followers</span>
+                            </a>
+                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3"
+                               style="background: #0185AE;">
+                                <i class="fab fa-linkedin-in text-center py-4 mr-3"
+                                   style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Connects</span>
+                            </a>
+                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3"
+                               style="background: #C8359D;">
+                                <i class="fab fa-instagram text-center py-4 mr-3"
+                                   style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Followers</span>
+                            </a>
+                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3"
+                               style="background: #DC472E;">
+                                <i class="fab fa-youtube text-center py-4 mr-3"
+                                   style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Subscribers</span>
+                            </a>
+                            <a href="" class="d-block w-100 text-white text-decoration-none"
+                               style="background: #055570;">
+                                <i class="fab fa-vimeo-v text-center py-4 mr-3"
+                                   style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Followers</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Social Follow End -->
+
+                    <!-- Ads Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Advertisement</h4>
+                        </div>
+                        <div class="bg-white text-center border border-top-0 p-3">
+                            <a href=""><img class="img-fluid" src="{% static 'blog/img/news-800x500-2.jpg' %}"
+                                            alt=""></a>
+                        </div>
+                    </div>
+                    <!-- Ads End -->
+
+                    <!-- Popular News Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Tranding POSTS</h4>
+                        </div>
+                        <div class="bg-white border border-top-0 p-3">
+                            {% for article in most_viewed_5 %}
+                            <div class="d-flex align-items-center bg-white mb-3" style="height: 110px;">
+                                <img class="img-fluid h-100" src="{{ article.get_photo }}" alt=""
+                                     style="object-fit: cover; width:100px">
+                                <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
+                                    <div class="mb-2">
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2"
+                                           href="">{{ article.category }}</a>
+                                        <a class="text-body" href="{% url 'article_detail' article.slug %}"><small>{{ article.created_date }}</small></a>
+                                    </div>
+                                    <a class="h6 m-0 text-secondary text-uppercase font-weight-bold"
+                                       href="{% url 'article_detail' article.slug %}">{{ article.title|truncatechars_html:15 }}</a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Popular News End -->
+
+                    <!-- Newsletter Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Newsletter</h4>
+                        </div>
+                        <div class="bg-white text-center border border-top-0 p-3">
+                            <p>Aliqu justo et labore at eirmod justo sea erat diam dolor diam vero kasd</p>
+                            <div class="input-group mb-2" style="width: 100%;">
+                                <input type="text" class="form-control form-control-lg" placeholder="Your Email">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary font-weight-bold px-3">Sign Up</button>
+                                </div>
+                            </div>
+                            <small>Lorem ipsum dolor sit amet elit</small>
+                        </div>
+                    </div>
+                    <!-- Newsletter End -->
+
+                    <!-- Tags Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Tags</h4>
+                        </div>
+                        <div class="bg-white border border-top-0 p-3">
+                            <div class="d-flex flex-wrap m-n1">
+                                {% for category in categories %}
+                                <a href="{% url 'category_page' category.slug %}"
+                                   class="btn btn-sm btn-outline-secondary m-1">{{ category.title }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tags End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main %}
