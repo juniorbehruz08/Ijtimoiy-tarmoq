@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 
 from django.shortcuts import render, redirect
 from django.utils.text import slugify
-
 from .models import *
 from .forms import ArticleForm, LoginForm, RegistrationForm, CommentForm, MessageForm, PhotoForm
 from django.contrib.auth import login, logout
