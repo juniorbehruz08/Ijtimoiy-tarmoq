@@ -20,7 +20,7 @@ def index(request):
                 login(request, user)
                 return redirect('HomePage')
             else:
-                return redirect('login')
+                return redirect('index')
         else:
             return redirect('index')
     else:
