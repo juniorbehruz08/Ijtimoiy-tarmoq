@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.utils.text import slugify
 from .models import *
 from .forms import ArticleForm, LoginForm, RegistrationForm, CommentForm, MessageForm, PhotoForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.db.models import Q
 
 
@@ -15,8 +15,10 @@ def index(request):
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
-            user = form.get_user()
-            if user:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user and user.is_active:
                 login(request, user)
                 return redirect('HomePage')
             else:
