@@ -117,12 +117,16 @@ def register(request):
 
 
 def add_article(request):
+    from datetime import datetime
+
+    current_date = datetime.now()
+    formatted_date = current_date.strftime("%d.%m.%Y")
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
         if request.user.is_authenticated and form.is_valid():
             article = form.save(commit=False)
             article.user = request.user
-            slug = f'{str(article.created_date)}_{article.title}_{article.user.username}'
+            slug = f'{str(formatted_date)}_{article.title}_{article.user.username}'
             article.slug = slugify(slug)
             article.save()
             return redirect('HomePage')
