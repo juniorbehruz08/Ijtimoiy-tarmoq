@@ -162,7 +162,8 @@ def category_page(request, slug):
     category = Category.objects.get(slug=slug)
     article = Article.objects.filter(category=category)
     categories = Category.objects.all()
-    most_viewed_5 = Article.objects.filter(category__slug=slug, created_date__range=(start_date, end_date)).order_by('-views')[:5]
+    most_viewed_5 = Article.objects.filter(category__slug=slug, created_date__range=(start_date, end_date)).order_by(
+        '-views')[:5]
     liked = Liked.objects.filter(user=request.user)
     liked_article = []
     adv = Advertisement.objects.all()
@@ -280,6 +281,7 @@ def search(request):
         return render(request, 'search.html', context)
     else:
         return redirect('HomePage')
+
 
 def chat(request):
     chattes = []
@@ -487,7 +489,7 @@ def save_chat(request, username):
 
     try:
         try:
-            Chat.objects.get(user1=request.user, user2=user_2,slug=slugify(str(request.user.username) + str(username)))
+            Chat.objects.get(user1=request.user, user2=user_2, slug=slugify(str(request.user.username) + str(username)))
             return redirect('message', slugify(str(request.user.username) + str(username)))
         except:
             Chat.objects.get(user1=user_2, user2=request.user, slug=slugify(str(username) + str(request.user.username)))
@@ -542,7 +544,8 @@ def ranking(request):
         if user.photos.all():
             ranks[i] = [rank[i], d, user.photos.first().photo.url]
         else:
-            ranks[i] = [rank[i], d, 'https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png']
+            ranks[i] = [rank[i], d,
+                        'https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png']
         d += 1
 
     context = {
@@ -625,7 +628,8 @@ def share_post(request, article_slug):
     a = request.GET.get('share')
     b = str(a).split()
     if b[0] == 'chat':
-        c = Message.objects.create(is_share=True, message=f'{article_slug}', user=request.user, chat=Chat.objects.get(slug=b[1]))
+        c = Message.objects.create(is_share=True, message=f'{article_slug}', user=request.user,
+                                   chat=Chat.objects.get(slug=b[1]))
         c.save()
         return redirect('message', b[1])
 
@@ -633,7 +637,6 @@ def share_post(request, article_slug):
         b = Saved.objects.create(text=article_slug, user=request.user, is_share=True)
         b.save()
         return redirect('saved_message')
-
 
     context = {
         'chats': Chat.objects.all(),
