@@ -1,3 +1,4 @@
+import operator
 import random
 from datetime import datetime, timedelta
 
@@ -527,33 +528,30 @@ def delete_article(request, article_slug):
 
 
 def ranking(request):
-    users = User.objects.all()
-    ranks = {}
     rank = {}
-    number = []
-    for user in users:
-        a = 0
-        for i in user.articles.all():
-            a += i.views
-        number.append(a)
-        rank[a] = user.username
-    numbers = sorted(number, reverse=True)
-    d = 1
-    for i in numbers:
-        user = User.objects.get_by_natural_key(rank[i])
+    index = 1
+    for i in User.objects.all():
+        views = 0
+        for j in i.articles.all():
+            views += j.views
+        rank[i.username] = views
+    sorted_rank = sorted(rank.items(), key=operator.itemgetter(1), reverse=True)
+    result = []
+    for i in sorted_rank:
+        a = list(i)
+        a.insert(0, index)
+        user = User.objects.get(username=i[0])
         if user.photos.all():
-            ranks[i] = [rank[i], d, user.photos.first().photo.url]
+            a.append(user.photos.all()[0].photo.url)
         else:
-            ranks[i] = [rank[i], d,
-                        'https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png']
-        d += 1
+            a.append('https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png')
+        result.append(a)
+        index = index + 1
 
     context = {
-        'number': numbers,
-        'rank': rank,
-        'ranks': ranks,
-        'title': 'RANKING'
+        'result': result
     }
+    print(result)
 
     return render(request, 'ranking.html', context)
 

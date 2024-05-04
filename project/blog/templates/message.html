@@ -7,7 +7,7 @@
     {% include 'components/header.html' %}
 </header>
 <div>
-    <div class="container" style="margin-top:80px; margin-bottom:110px;">
+    <div class="container" style="margin-top:200px; margin-bottom:110px;">
         {% for message in messages %}
         {% if request.user == message.user %}
         {% if message.is_share == True %}
