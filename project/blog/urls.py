@@ -28,5 +28,11 @@ urlpatterns = [
     path('photo_delete/', photo_delete, name='photo_delete'),
     path('favourite/', favourite, name='favourite'),
     path('saved_message/', saved_message, name='saved_message'),
-    path('share/<slug:article_slug>', share_post, name='share')
+    path('share/<slug:article_slug>', share_post, name='share'),
+    path('groups/', groups, name='groups'),
+    path('group_message/<int:pk>/', group_message, name='group_message'),
+    path('add_member/<int:pk>/', add_member, name='add_member'),
+    path('exit_group/<int:pk>/', exit_group, name='exit_group'),
+    path('create_group/', create_group, name='create_group'),
+    path('delete_invalid_group/', delete_invalid_group, name='delete_invalid_group'),
 ]

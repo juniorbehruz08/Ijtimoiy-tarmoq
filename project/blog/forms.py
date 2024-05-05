@@ -110,7 +110,15 @@ class MessageForm(forms.ModelForm):
         'placeholder': 'Your message'
     }))
 
+class GroupMessageForm(forms.ModelForm):
+    class Meta:
+        model = GroupMessage
+        fields = ['message']
 
+    message = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control rounded',
+        'placeholder': 'Your message'
+    }))
 class PhotoForm(forms.ModelForm):
     class Meta:
         model = AccountPhoto

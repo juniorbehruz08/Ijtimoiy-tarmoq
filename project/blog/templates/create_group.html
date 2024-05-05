@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+{% endblock title %}
+
+
+
+{% block main %}
+<div class="container d-flex justify-content-center">
+    <div class="card col-12 rounded" style="margin-top: 200px; margin-bottom: 200px">
+        <form action="" enctype="multipart/form-data" class="p-5">
+            <label for="name">Group Name</label>
+            <input type="text" id="name" name="group_name" class="form-control rounded" placeholder="Group Name">
+            <br>
+            <label for="file">Group Photo</label>
+            <input type="file" id="file" name="photo" class="form-control rounded">
+            <div class="text-center mt-4"><button class="btn btn-success rounded">Create New Group</button></div>
+        </form>
+    </div>
+</div>
+{% endblock main %}

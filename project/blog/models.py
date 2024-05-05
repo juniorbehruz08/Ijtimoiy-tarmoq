@@ -86,6 +86,7 @@ class AccountPhoto(models.Model):
     photo = models.ImageField(upload_to='AccountPhotos', verbose_name='photo')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='photos')
     objects = models.Manager()
+
     def __str__(self):
         return self.user.username
 
@@ -139,6 +140,9 @@ class Liked(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked')
     objects = models.Manager()
 
+    def __str__(self):
+        return f'{self.user} liked {self.article}'
+
 
 class Problem(models.Model):
     problem = models.CharField(max_length=1000, verbose_name='Problem')
@@ -181,5 +185,54 @@ class Saved(models.Model):
         return self.user.username
 
 
+class Group(models.Model):
+    group_name = models.CharField(max_length=200, verbose_name='Group name')
+    objects = models.Manager()
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name='time')
+    photo = models.ImageField(upload_to='GroupPhoto', blank=True, null=True, verbose_name='photo')
+
+    def get_len(self):
+        a = Group.objects.get(group_name=self.group_name)
+        b = a.Members.all()
+        return len(b)
+
+    def __str__(self):
+        return self.group_name
+
+    class Meta:
+        verbose_name = 'Group'
+        verbose_name_plural = 'Groups'
 
 
+class GroupMember(models.Model):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='Members')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.user}: {self.group}'
+
+    class Meta:
+        verbose_name = 'Group Member'
+        verbose_name_plural = 'Group Members'
+
+
+class GroupMessage(models.Model):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='messages')
+    message = models.CharField(max_length=1000, verbose_name='Message')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages')
+    is_share = models.BooleanField(default=False, verbose_name='Is share')
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name='time')
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.user}: {self.message}'
+
+    class Meta:
+        verbose_name = 'Group Message'
+        verbose_name_plural = 'Group Messages'
+
+
+@receiver(pre_delete, sender=Group)
+def delete_image(sender, instance, **kwargs):
+    instance.photo.delete()

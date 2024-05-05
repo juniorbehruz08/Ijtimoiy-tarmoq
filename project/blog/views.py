@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.shortcuts import render, redirect
 from django.utils.text import slugify
 from .models import *
-from .forms import ArticleForm, LoginForm, RegistrationForm, CommentForm, MessageForm, PhotoForm
+from .forms import ArticleForm, LoginForm, RegistrationForm, CommentForm, MessageForm, PhotoForm, GroupMessageForm
 from django.contrib.auth import login, logout, authenticate
 from django.db.models import Q
 
@@ -45,15 +45,16 @@ def HomePage(request):
     four_to_seven = Article.objects.all().order_by('-created_date')[3:7]
     most_viewed_5 = Article.objects.filter(created_date__range=(start_date, end_date)).order_by('-views')[:5]
     article = Article.objects.all()
-    liked = Liked.objects.filter(user=request.user)
-    adv = Advertisement.objects.all()
     liked_article = []
+    if request.user.is_authenticated:
+        liked = Liked.objects.filter(user=request.user)
+        for i in liked:
+            liked_article.append(i.article)
+    adv = Advertisement.objects.all()
     a = request.GET.get('muammo')
-    if a:
+    if a and request.user.is_authenticated:
         a = Problem.objects.create(user=request.user, problem=str(a))
         a.save()
-    for i in liked:
-        liked_article.append(i.article)
     while True:
         if len(articles) == 8 or len(articles) == len(article):
             break
@@ -163,8 +164,7 @@ def category_page(request, slug):
     category = Category.objects.get(slug=slug)
     article = Article.objects.filter(category=category)
     categories = Category.objects.all()
-    most_viewed_5 = Article.objects.filter(category__slug=slug, created_date__range=(start_date, end_date)).order_by(
-        '-views')[:5]
+    most_viewed_5 = Article.objects.filter(category__slug=slug, created_date__range=(start_date, end_date)).order_by('-views')[:5]
     liked = Liked.objects.filter(user=request.user)
     liked_article = []
     adv = Advertisement.objects.all()
@@ -467,11 +467,11 @@ def view_account(request, username):
             break
     else:
         image.append('https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png')
-
-    liked = Liked.objects.filter(user=request.user)
     liked_article = []
-    for i in liked:
-        liked_article.append(i.article)
+    if request.user.is_authenticated:
+        liked = Liked.objects.filter(user=request.user)
+        for i in liked:
+            liked_article.append(i.article)
 
     context = {
         'articles': articles,
@@ -642,3 +642,95 @@ def share_post(request, article_slug):
     }
 
     return render(request, 'share.html', context)
+
+
+def groups(request):
+    len_member = {}
+    groupss = []
+    group = Group.objects.all()
+    for i in group:
+        len_member[i.group_name] = len(i.Members.all())
+        for j in i.Members.all():
+            if request.user == j.user:
+                groupss.append(i)
+
+    context = {
+        'groups': groupss,
+        'title': 'Group',
+        'len_member': len_member
+    }
+
+    return render(request, 'groups.html', context)
+
+
+def delete_invalid_group(request):
+    for i in Group.objects.all():
+        if len(i.Members.all()) == 0:
+            i.delete()
+    return redirect('groups')
+
+
+def group_message(request, pk):
+    group = Group.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = GroupMessageForm(request.POST)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.user = request.user
+            data.group = group
+            data.save()
+            return redirect('group_message', pk)
+    else:
+
+        context = {
+            'title': 'Group Message',
+            'form': GroupMessageForm(),
+            'messages': GroupMessage.objects.filter(group=group)
+        }
+
+        return render(request, 'group_message.html', context)
+
+
+def add_member(request, pk):
+    group = Group.objects.get(pk=pk)
+    user = request.GET.get('user')
+    if user:
+        try:
+            GroupMember.objects.get(user=User.objects.get(username=user), group=group)
+        except:
+            new_user = User.objects.get(username=user)
+            a = GroupMember.objects.create(user=new_user, group=group)
+            a.save()
+        return redirect('delete_invalid_group')
+    context = {
+        'users': User.objects.all(),
+    }
+
+    return render(request, 'add_member.html', context)
+
+
+def exit_group(request, pk):
+    group = Group.objects.get(pk=pk)
+    a = GroupMember.objects.get(user=request.user, group=group)
+    a.delete()
+    return redirect('groups')
+
+
+def create_group(request):
+    photo = request.FILES.get('photo')
+    group_name = request.GET.get('group_name')
+    if group_name:
+        if group_name and photo:
+            data = Group.objects.create(group_name=group_name, photo=photo)
+            data.save()
+            member = GroupMember.objects.create(user=request.user, group=data)
+            member.save()
+            return redirect('group_message', data.id)
+        else:
+            data = Group.objects.create(group_name=group_name)
+            data.save()
+            member = GroupMember.objects.create(user=request.user, group=data)
+            member.save()
+            return redirect('group_message', data.id)
+    else:
+        return render(request, 'create_group.html')
