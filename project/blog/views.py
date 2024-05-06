@@ -685,7 +685,8 @@ def group_message(request, pk):
         context = {
             'title': 'Group Message',
             'form': GroupMessageForm(),
-            'messages': GroupMessage.objects.filter(group=group)
+            'messages': GroupMessage.objects.filter(group=group),
+            'group_title': group.group_name,
         }
 
         return render(request, 'group_message.html', context)
@@ -734,3 +735,14 @@ def create_group(request):
             return redirect('group_message', data.id)
     else:
         return render(request, 'create_group.html')
+
+
+def change_group_photo(request, pk):
+    group = Group.objects.get(pk=pk)
+    photo = request.FILES.get('photo')
+    if photo:
+        group.photo = photo
+        group.save()
+        return redirect('groups')
+
+    return render(request, 'change_group_photo.html', {'title': 'Change Photo'})

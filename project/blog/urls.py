@@ -35,4 +35,5 @@ urlpatterns = [
     path('exit_group/<int:pk>/', exit_group, name='exit_group'),
     path('create_group/', create_group, name='create_group'),
     path('delete_invalid_group/', delete_invalid_group, name='delete_invalid_group'),
+    path('change_group_photo/<int:pk>/', change_group_photo, name='change_group_photo'),
 ]
