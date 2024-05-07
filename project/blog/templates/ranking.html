@@ -7,29 +7,17 @@
 
 {% block main %}
     <div class="container-fluid" style="margin-top:180px">
-{#        {% for i,j in ranks.items %}#}
-{#            <div class="col-12">#}
-{#                <div class="card-body">#}
-{#                    <div class="section-title">#}
-{#                        <div class="d-flex justify-content-end">#}
-{#                            <img style="height:200px; width:200px; border-radius:200px;" src="{{ j.2 }}" alt="">#}
-{#                            <h1 style="margin-top:70px; margin-left:40px; font-size:50px"><a#}
-{#                                    href="{% url 'view_account' j.0 %}">{{ j.1 }}. {{ j.0 }}</a></h1>#}
-{#                            <h1 style="margin-top:70px; margin-left:300px; font-size:50px">Total Views: {{ i }}</h1>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endfor %}#}
+
         {% for i in result %}
             <div class="col-12">
                 <div class="card-body">
                     <div class="section-title">
-                        <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-start">
                             <img style="height:200px; width:200px; border-radius:200px;" src="{{ i.3 }}" alt="">
                             <h1 style="margin-top:70px; margin-left:40px; font-size:50px"><a
                                     href="{% url 'view_account' i.1 %}">{{ i.0 }}. {{ i.1 }}</a></h1>
-                            <h1 style="margin-top:70px; margin-left:300px; font-size:50px">Total Views: {{ i.2 }}</h1>
+                                </div>
                         </div>
                     </div>
                 </div>

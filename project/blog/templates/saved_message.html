@@ -21,8 +21,15 @@
             <h3 style="border: 1px solid grey; padding:10px; border-radius:10px; opacity: 0.5;">{{ message.text }}
             </h3>
             {% else %}
-            <h3 style="border: 1px solid grey; padding:10px; border-radius:10px; opacity: 0.5;"><a style="color:blue" href="{% url 'article_detail' message.text %}">{{ message.text }}</a>
-            </h3>
+                <div class="card mb-1" style="border: 1px solid grey; padding:10px; border-radius:10px;">
+                    <a href="{% url 'article_detail' message.url %}">
+                    <img style="width: 100%" class="img-fluid h-100" src="{{ message.image }}" alt="">
+                    </a>
+                    <div class="">
+                        <h5>{{ message.text }}</h5>
+                        <h5><a href="{% url 'article_detail' message.url %}">More Information</a></h5>
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>

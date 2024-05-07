@@ -121,6 +121,8 @@ class Chat(models.Model):
 
 class Message(models.Model):
     message = models.CharField(max_length=1000, verbose_name='message')
+    url = models.CharField(max_length=500, default='')
+    image = models.CharField(max_length=500, verbose_name='image', default='')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='time')
@@ -177,6 +179,8 @@ class Advertisement(models.Model):
 
 class Saved(models.Model):
     text = models.CharField(max_length=1000, verbose_name='Saved Message')
+    url = models.CharField(max_length=500, default='')
+    image = models.CharField(max_length=500, verbose_name='image', default='')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='saved')
     is_share = models.BooleanField(default=False, verbose_name='Is share')
     objects = models.Manager()

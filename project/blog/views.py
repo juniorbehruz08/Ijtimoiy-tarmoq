@@ -318,7 +318,8 @@ def message(request, chat_slug):
         'own_message': user1_message,
         'chat': chats,
         'form': MessageForm(),
-        'messages': messages
+        'messages': messages,
+        'chats': chats
     }
 
     return render(request, 'message.html', context)
@@ -516,9 +517,22 @@ def delete_chat(request, chat_slug):
 
 def delete_article(request, article_slug):
     article = Article.objects.get(slug=article_slug)
+
     action = request.GET.get('action')
     if action:
         if action == 'yes':
+            share = Saved.objects.filter(url=article_slug)
+            for i in share:
+                i.is_share = False
+                i.url = ''
+                i.image = ''
+                i.save()
+            messages = Message.objects.filter(url=article_slug)
+            for i in messages:
+                i.is_share = False
+                i.url = ''
+                i.image = ''
+                i.save()
             article.delete()
             return redirect('profile')
         else:
@@ -549,9 +563,9 @@ def ranking(request):
         index = index + 1
 
     context = {
-        'result': result
+        'result': result,
+        'title': 'RANKING'
     }
-    print(result)
 
     return render(request, 'ranking.html', context)
 
@@ -623,21 +637,34 @@ def saved_message(request):
 
 
 def share_post(request, article_slug):
+    article = Article.objects.get(slug=article_slug)
+    if article.photo:
+        image = article.photo.url
+    else:
+        image = 'https://avatars.mds.yandex.net/i?id=adc64fa49b3479a0bf526527b9f2ba882ba3c8e9-10928745-images-thumbs&n=13'
     a = request.GET.get('share')
     b = str(a).split()
     if b[0] == 'chat':
-        c = Message.objects.create(is_share=True, message=f'{article_slug}', user=request.user,
-                                   chat=Chat.objects.get(slug=b[1]))
+        c = Message.objects.create(is_share=True, message=f'{article.title}', user=request.user,
+                                   chat=Chat.objects.get(slug=b[1]), image=image, url=f'{article.slug}')
         c.save()
         return redirect('message', b[1])
 
     if a == 'saved':
-        b = Saved.objects.create(text=article_slug, user=request.user, is_share=True)
+        b = Saved.objects.create(text=article.title, user=request.user, is_share=True, image=article.photo.url, url=f'{article.slug}')
         b.save()
         return redirect('saved_message')
+    Chats = []
+
+    chat1 = Chat.objects.filter(user1=request.user)
+    chat2 = Chat.objects.filter(user2=request.user)
+    chat3 = [chat1, chat2]
+    for i in chat3:
+        for j in i:
+            Chats.append(j)
 
     context = {
-        'chats': Chat.objects.all(),
+        'chats': Chats,
         'title': 'Share'
     }
 
@@ -687,12 +714,18 @@ def group_message(request, pk):
             'form': GroupMessageForm(),
             'messages': GroupMessage.objects.filter(group=group),
             'group_title': group.group_name,
+            'members': group.Members.all()
         }
 
         return render(request, 'group_message.html', context)
 
 
 def add_member(request, pk):
+    data = request.GET.get('search')
+    if data:
+        users = User.objects.filter(username__icontains=data)
+    else:
+        users = User.objects.all()
     group = Group.objects.get(pk=pk)
     user = request.GET.get('user')
     if user:
@@ -704,7 +737,8 @@ def add_member(request, pk):
             a.save()
         return redirect('delete_invalid_group')
     context = {
-        'users': User.objects.all(),
+        'users': users,
+        'title': 'Add Member',
     }
 
     return render(request, 'add_member.html', context)
