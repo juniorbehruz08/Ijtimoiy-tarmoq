@@ -15,18 +15,18 @@
                     <img style="height: 60px; width: 60px; border-radius: 60px"
                          src="{{ chats.user2.photos.first.photo.url }}" alt="">
                 {% else %}<img style="height: 60px; width: 60px; border-radius: 60px"
-                               src="https://avatars.mds.yandex.net/i?id=adc64fa49b3479a0bf526527b9f2ba882ba3c8e9-10928745-images-thumbs&n=13"
-                               alt="">{% endif %}{{ chats.user2.username }}</label>
+                               src="https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png"
+                               alt="">{% endif %}<a style="color:black; opacity: 0.5" href="{% url 'view_account' chats.user2.username %}">{{ chats.user2.username }}</a></label>
         {% else %}
             <label class="text-center"
                    style="border-radius:15px; font-size:50px; font-weight: bold;  padding: 5px; width: 800px; background-color:whitesmoke">
                 {% if chats.user1.photos.all %}
                     <img src="{{ chats.user1.photos.all.first.photo.url }}" alt="">
-                {% else %}<img style="height: 60px; width: 60px; border-radius: 60px" src="https://avatars.mds.yandex.net/i?id=adc64fa49b3479a0bf526527b9f2ba882ba3c8e9-10928745-images-thumbs&n=13" alt="">
-                    {{ chats.user1.username }}{% endif %}</label>
+                {% else %}<img style="height: 60px; width: 60px; border-radius: 60px" src="https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png" alt="">
+                    {% endif %}<a style="color:black; opacity: 0.5" href="{% url 'view_account' chats.user1.username %}">{{ chats.user1.username }}</a></label>
         {% endif %}
     </div>
-    <div class="container" style="margin-top:200px; margin-bottom:110px;">
+    <div class="container" style="margin-top:300px; margin-bottom:110px;">
 
         {% for message in messages %}
             {% if request.user == message.user %}
@@ -80,6 +80,9 @@
                                     <h5><a href="{% url 'article_detail' message.url %}">More Information</a></h5>
                                 </div>
                             </div>
+                            <p style="font-size:14px">
+                                {{ message.created_date }}
+                            </p>
                         </div>
                     </div>
                 {% endif %}

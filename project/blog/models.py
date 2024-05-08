@@ -240,3 +240,63 @@ class GroupMessage(models.Model):
 @receiver(pre_delete, sender=Group)
 def delete_image(sender, instance, **kwargs):
     instance.photo.delete()
+
+
+class Channel(models.Model):
+    channel_name = models.CharField(max_length=200, verbose_name='Channel name')
+    objects = models.Manager()
+    admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='channels')
+    photo = models.ImageField(upload_to='channelPhotos', verbose_name='Photo', blank=True, null=True)
+
+    def __str__(self):
+        return self.channel_name
+
+    class Meta:
+        verbose_name = 'Channel'
+        verbose_name_plural = 'Channels'
+
+
+@receiver(pre_delete, sender=Channel)
+def delete_image(sender, instance, **kwargs):
+    instance.photo.delete()
+
+
+class ChannelMember(models.Model):
+    channel = models.ForeignKey(Channel, on_delete=models.CASCADE, related_name='Members')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ChannelMember')
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.user}: {self.channel}'
+
+    class Meta:
+        verbose_name = 'Channel Member'
+        verbose_name_plural = 'Channel Members'
+
+
+class ChannelContent(models.Model):
+    image = models.ImageField(upload_to='channelContentPhotos', verbose_name='Photo', blank=True, null=True)
+    content = models.TextField(verbose_name='Content')
+    channel = models.ForeignKey(Channel, on_delete=models.CASCADE, related_name='ChannelContent')
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.content
+
+    class Meta:
+        verbose_name = 'Channel Content'
+        verbose_name_plural = 'Channel Contents'
+
+
+class ChannelContentComment(models.Model):
+    comment = models.TextField(verbose_name='Comment')
+    content = models.ForeignKey(ChannelContent, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Comments')
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.comment
+
+    class Meta:
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'

@@ -42,7 +42,8 @@
     <div style="text-align:center; padding-top:50px;">
     <div class="dropdown">
         <input type="checkbox" id="dropdownCheckbox">
-        <label for="dropdownCheckbox" style="border-radius:15px; font-size:50px; font-weight: bold;  padding: 5px; width: 800px; background-color:whitesmoke">{{ group_title }}</label>
+        <label for="dropdownCheckbox" style="border-radius:15px; font-size:50px; font-weight: bold;  padding: 5px; width: 800px; background-color:whitesmoke"><img
+               style="height: 60px; width: 60px; border-radius: 60px" src="{{ group.photo.url }}" alt="">{{ group.group_name }}</label>
         <div class="dropdown-content card" style="border-radius: 20px; margin-left: -400px;">
             {% for member in members %}
                 <h2 style="text-align: left;"><a style="color:black; text-align: left; opacity: 0.5" href="{% url 'view_account' member.user.username %}">{{ member.user.username }}</a>

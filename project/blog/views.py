@@ -563,7 +563,7 @@ def ranking(request):
         index = index + 1
 
     context = {
-        'result': result,
+        'result': result[:100],
         'title': 'RANKING'
     }
 
@@ -713,7 +713,7 @@ def group_message(request, pk):
             'title': 'Group Message',
             'form': GroupMessageForm(),
             'messages': GroupMessage.objects.filter(group=group),
-            'group_title': group.group_name,
+            'group': group,
             'members': group.Members.all()
         }
 
@@ -753,7 +753,7 @@ def exit_group(request, pk):
 
 def create_group(request):
     photo = request.FILES.get('photo')
-    group_name = request.GET.get('group_name')
+    group_name = request.POST.get('group_name')
     if group_name:
         if group_name and photo:
             data = Group.objects.create(group_name=group_name, photo=photo)
