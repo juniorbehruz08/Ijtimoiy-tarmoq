@@ -35,5 +35,9 @@ urlpatterns = [
     path('exit_group/<int:pk>/', exit_group, name='exit_group'),
     path('create_group/', create_group, name='create_group'),
     path('delete_invalid_group/', delete_invalid_group, name='delete_invalid_group'),
-    path('change_group_photo/<int:pk>/', change_group_photo, name='change_group_photo'),
+    path('edit_group/<int:pk>/', edit_group, name='edit_group'),
+    path('channels/', channels, name='channels'),
+    path('subscribe/<str:channel>', subscribe, name='subscribe'),
+    path('create_channel/', create_channel, name='create_channel'),
+    path('edit_channel/<int:pk>/', edit_channel, name='edit_channel')
 ]

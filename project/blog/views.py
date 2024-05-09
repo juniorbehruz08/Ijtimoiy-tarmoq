@@ -768,15 +768,90 @@ def create_group(request):
             member.save()
             return redirect('group_message', data.id)
     else:
-        return render(request, 'create_group.html')
+        return render(request, 'create_group.html', {'title': 'Create Group'})
 
 
-def change_group_photo(request, pk):
-    group = Group.objects.get(pk=pk)
-    photo = request.FILES.get('photo')
-    if photo:
-        group.photo = photo
-        group.save()
-        return redirect('groups')
+def edit_group(request, pk):
+    if request.method == 'POST':
+        group = Group.objects.get(pk=pk)
+        group_name = request.POST.get('group_name')
+        photo = request.FILES.get('photo')
+        if group_name and photo:
+            group.group_name = group_name
+            group.photo = photo
+            group.save()
+            return redirect('groups')
+        elif group_name:
+            group.group_name = group_name
+            group.save()
+        else:
+            return redirect('edit_group')
 
-    return render(request, 'change_group_photo.html', {'title': 'Change Photo'})
+        return render(request, 'edit_group.html', {'title': 'Edit Group'})
+
+
+
+    return render(request, 'edit_group.html', {'title': 'Change Photo'})
+
+
+def channels(request):
+    title = request.GET.get('channel')
+    if title and title == 'other':
+        channels = Channel.objects.all()
+        data = 'Other Channels'
+    elif title and title == 'my':
+        data = 'My Channels'
+        channels = Channel.objects.filter(admin=request.user)
+    else:
+        channels = Channel.objects.filter(Members__user=request.user)
+        data = 'Subscriptions'
+
+    context = {
+        'channels': channels,
+        'title': data
+    }
+
+    return render(request, 'channel.html', context)
+
+
+def subscribe(request, channel):
+    channel = Channel.objects.get(channel_name=channel)
+    try:
+        a = ChannelMember.objects.get(user=request.user, channel=channel)
+        a.delete()
+    except:
+        a = ChannelMember.objects.create(user=request.user, channel=channel)
+        a.save()
+    return redirect('channels')
+
+
+def create_channel(request):
+    if request.method == 'POST':
+        title = request.POST.get('group_name')
+        photo = request.FILES.get('photo')
+        data = Channel.objects.create(channel_name=title, photo=photo, admin=request.user)
+        data.save()
+        data1 = ChannelMember.objects.create(user=request.user, channel=data)
+        data1.save()
+        return redirect('channels')
+    else:
+        context = {
+            'title': 'Create Channel',
+        }
+        return render(request, 'create_group.html', context)
+
+
+def edit_channel(request, pk):
+    if request.method == 'POST':
+        title = request.POST.get('group_name')
+        photo = request.FILES.get('photo')
+        data = Channel.objects.get(pk=pk)
+        data.channel_name = title
+        data.photo = photo
+        data.save()
+        return redirect('channels')
+    else:
+        context = {
+            'title': 'Edit Channel',
+        }
+        return render(request, 'create_group.html', context)

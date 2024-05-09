@@ -12,7 +12,7 @@
         <div class="col-12">
             <div class="card-body">
                 <div class="section-title">
-                    <div><a href="{% url 'change_group_photo' group.pk %}"><img
+                    <div><a href="{% url 'edit_group' group.pk %}"><img
                             src="{% if group.photo %}{{ group.photo.url }}{% endif %}"
                             style="width:120px; height:120px; border-radius:120px"
                             alt=""></a></div>

@@ -248,8 +248,11 @@ class Channel(models.Model):
     admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='channels')
     photo = models.ImageField(upload_to='channelPhotos', verbose_name='Photo', blank=True, null=True)
 
+    def total_follower(self):
+        return len(self.Members.all()) - 1
+
     def __str__(self):
-        return self.channel_name
+        return f'{self.channel_name} | Author:{self.admin}'
 
     class Meta:
         verbose_name = 'Channel'
@@ -288,6 +291,11 @@ class ChannelContent(models.Model):
         verbose_name_plural = 'Channel Contents'
 
 
+@receiver(pre_delete, sender=ChannelContent)
+def delete_image(sender, instance, **kwargs):
+    instance.photo.delete()
+
+
 class ChannelContentComment(models.Model):
     comment = models.TextField(verbose_name='Comment')
     content = models.ForeignKey(ChannelContent, on_delete=models.CASCADE, related_name='comments')
@@ -300,3 +308,8 @@ class ChannelContentComment(models.Model):
     class Meta:
         verbose_name = 'Comment'
         verbose_name_plural = 'Comments'
+
+
+@receiver(pre_delete, sender=ChannelContentComment)
+def delete_image(sender, instance, **kwargs):
+    instance.photo.delete()

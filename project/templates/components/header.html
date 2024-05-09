@@ -39,6 +39,8 @@
                        class="nav-item nav-link {% if 'CHATS' == title %}active{% endif %}{% if 'CHAT' == title %}active{% endif %}{% if 'Saved Message' == title %}active{% endif %}{% if 'Share' == title %}active{% endif %}">Chats</a>
                     <a href="{% url 'groups' %}"
                        class="nav-item nav-link {% if title == 'Group' %}active{% elif title == 'Group Message' %}active{% endif %}">Group</a>
+                    <a href="{% url 'channels' %}"
+                       class="nav-item nav-link {% if title == 'My Channels' %}active{% elif title == 'Subscriptions' %}active{% elif title == 'Other Channels' %}active{% endif %}">Channel</a>
 
                     <a href="{% url 'add_article' %}"
                        class="nav-item nav-link {% if title == 'ADD ARTICLE' %}active{% endif %}">ADD POST</a>
@@ -49,7 +51,9 @@
                     <a href="{% url 'index' %}" class="nav-item nav-link text-success">Login</a>
                 {% endif %}
             </div>
-            <form action="{% if title == 'ADD CHAT' %}{% elif title == 'Add Member' %}{% else %}{% url 'search' %}{% endif %}" method="get">
+            <form action="
+                    {% if title == 'ADD CHAT' %}{% elif title == 'Add Member' %}{% else %}{% url 'search' %}{% endif %}"
+                  method="get">
                 <div class="input-group ml-auto d-none d-lg-flex" style="width: 100%; max-width: 300px;">
                     <input type="text" name="search" class="form-control border-0"
                            placeholder="{% if title != 'ADD CHAT' %}SEARCH{% else %}SEARCH BY USERNAME{% endif %}">

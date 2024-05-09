@@ -21,7 +21,7 @@
             <label class="text-center"
                    style="border-radius:15px; font-size:50px; font-weight: bold;  padding: 5px; width: 800px; background-color:whitesmoke">
                 {% if chats.user1.photos.all %}
-                    <img src="{{ chats.user1.photos.all.first.photo.url }}" alt="">
+                    <img style="height: 60px; width: 60px; border-radius: 60px" src="{{ chats.user1.photos.all.first.photo.url }}" alt="">
                 {% else %}<img style="height: 60px; width: 60px; border-radius: 60px" src="https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png" alt="">
                     {% endif %}<a style="color:black; opacity: 0.5" href="{% url 'view_account' chats.user1.username %}">{{ chats.user1.username }}</a></label>
         {% endif %}

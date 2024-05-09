@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-
+{{ title }}
 {% endblock title %}
 
 
@@ -11,12 +11,12 @@
     <div class="card col-12 rounded" style="margin-top: 200px; margin-bottom: 200px">
         <form action="" method="post" enctype="multipart/form-data" class="p-5">
             {% csrf_token %}
-            <label for="name">Group Name</label>
-            <input type="text" id="name" name="group_name" class="form-control rounded" placeholder="Group Name">
+            <label for="name">{% if title == 'Create Channel' %}Channel{% elif title == 'Edit Channel' %}Channel{% else %}Group{% endif %} Name</label>
+            <input type="text" id="name" name="group_name" class="form-control rounded" placeholder="{% if title == 'Create Channel' %}Channel{% elif title == 'Edit Channel' %}Channel{% else %}Group{% endif %} Name">
             <br>
-            <label for="file">Group Photo</label>
+            <label for="file">{% if title == 'Create Channel' %}Channel{% elif title == 'Edit Channel' %}Channel{% else %}Group{% endif %} Photo</label>
             <input type="file" id="file" name="photo" class="form-control rounded">
-            <div class="text-center mt-4"><button class="btn btn-success rounded">Create New Group</button></div>
+            <div class="text-center mt-4"><button class="btn btn-success rounded">{% if title == 'Edit Channel' %}Edit{% else %}Create New{% endif %} {% if title == 'Create Channel' %}Channel{% elif title == 'Edit Channel' %}Channel{% else %}Group{% endif %}</button></div>
         </form>
     </div>
 </div>
