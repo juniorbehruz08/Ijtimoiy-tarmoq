@@ -855,3 +855,36 @@ def edit_channel(request, pk):
             'title': 'Edit Channel',
         }
         return render(request, 'create_group.html', context)
+
+
+def channel_content(request, pk):
+    channel = Channel.objects.get(pk=pk)
+    content = ChannelContent.objects.filter(channel=channel)
+
+    context = {
+        'channel': channel,
+        'contents': content,
+        'title': channel.channel_name
+    }
+
+    return render(request, 'channel_content.html', context)
+
+
+def channel_content_save(request, pk):
+    channel = Channel.objects.get(pk=pk)
+    if request.method == 'POST':
+        data = ChannelContent.objects.create(content=request.POST.get('content'), channel=channel, image=request.FILES.get('photo'))
+        data.save()
+        return redirect('channel_content', pk)
+    return redirect('channel_content', pk)
+
+
+def delete_channel(request, pk):
+    data = request.GET.get('action')
+    if data and data == 'yes':
+        data1 = Channel.objects.get(pk=pk)
+        data1.delete()
+        return redirect('channels')
+    if data and data == 'no':
+        return redirect('channels')
+    return render(request, 'yes_or_not.html', {'title': 'DELETE | CHANNEL'})

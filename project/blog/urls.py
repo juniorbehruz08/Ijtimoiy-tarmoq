@@ -39,5 +39,8 @@ urlpatterns = [
     path('channels/', channels, name='channels'),
     path('subscribe/<str:channel>', subscribe, name='subscribe'),
     path('create_channel/', create_channel, name='create_channel'),
-    path('edit_channel/<int:pk>/', edit_channel, name='edit_channel')
+    path('edit_channel/<int:pk>/', edit_channel, name='edit_channel'),
+    path('channel_content/<int:pk>/', channel_content, name='channel_content'),
+    path('channel_content_save/<int:pk>/', channel_content_save, name='channel_content_save'),
+    path('delete_channel/<int:pk>/', delete_channel, name='delete_channel')
 ]

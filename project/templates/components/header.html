@@ -40,7 +40,7 @@
                     <a href="{% url 'groups' %}"
                        class="nav-item nav-link {% if title == 'Group' %}active{% elif title == 'Group Message' %}active{% endif %}">Group</a>
                     <a href="{% url 'channels' %}"
-                       class="nav-item nav-link {% if title == 'My Channels' %}active{% elif title == 'Subscriptions' %}active{% elif title == 'Other Channels' %}active{% endif %}">Channel</a>
+                       class="nav-item nav-link {% if title == 'My Channels' %}active{% elif title == 'Subscriptions' %}active{% elif title == 'Create Channel' %}active{% elif title == channel.channel_name %}active{% elif title == 'Other Channels' %}active{% endif %}">Channel</a>
 
                     <a href="{% url 'add_article' %}"
                        class="nav-item nav-link {% if title == 'ADD ARTICLE' %}active{% endif %}">ADD POST</a>

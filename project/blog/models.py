@@ -281,6 +281,7 @@ class ChannelContent(models.Model):
     image = models.ImageField(upload_to='channelContentPhotos', verbose_name='Photo', blank=True, null=True)
     content = models.TextField(verbose_name='Content')
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE, related_name='ChannelContent')
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Created Date')
     objects = models.Manager()
 
     def __str__(self):
@@ -293,7 +294,7 @@ class ChannelContent(models.Model):
 
 @receiver(pre_delete, sender=ChannelContent)
 def delete_image(sender, instance, **kwargs):
-    instance.photo.delete()
+    instance.image.delete()
 
 
 class ChannelContentComment(models.Model):

@@ -22,13 +22,16 @@
     {% for i in channels %}
         <div class="d-flex justify-content-between mb-2" style="height:90px; border-radius: 15px; border:3px solid darkgray; width: 1200px; margin-left: -40px">
             <div class="d-flex justify-content-start" style="width:800px">
-                <a href="{% if i.admin == request.user %} {% url 'edit_channel' i.pk %}{% endif %}">
+                <a href="{% if i.admin == request.user %}{% url 'edit_channel' i.pk %}{% endif %}">
                 <img src="{% if i.photo %}{{ i.photo.url }}{% else %}https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png{% endif %}" style="height: 60px; width: 60px; border-radius: 60px; margin-top: 10px; margin-left: 20px" alt="">
                 </a>
-                <h3 class="mt-4" style="margin-left:10px">{{ i.channel_name }}</h3>
+                <h3 class="mt-4" style="margin-left:10px"><a href="{% url 'channel_content' i.pk %}">{{ i.channel_name }}</a></h3>
             </div>
 
             <div class="d-flex justify-content-around" style="width: 400px">
+            {% if request.user == i.admin %}
+                <div style="margin-top: 20px"><a href="{% url 'delete_channel' i.pk %}"><button class="btn btn-danger rounded">Delete Channel</button></a></div>
+            {% endif %}
                 {% if title != 'My Channels' %}
                     {% if title == 'Other Channels' %}
                         {% if request.user == i.Members.all.first.user %}
@@ -39,7 +42,7 @@
                     {% elif title == 'Subscriptions' %}
                         <div style="margin-top: 20px"><a href="{% url 'subscribe' i.channel_name %}"><button class="btn btn-danger rounded">Unsubscribe</button></a></div>
                     {% endif %}
-                {% endif %}
+                    {% endif %}
                 <h4 style="margin-top: 28px">{{ i.total_follower }}</h4>
             </div>
         </div>

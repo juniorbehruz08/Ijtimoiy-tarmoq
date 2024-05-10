@@ -5,19 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0d459c9-e9ec-4c16-ab2c-3d1f53b3c023" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/project/blog/templates/channel.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/blog/templates/channel_content.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/blog/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/blog/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/blog/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/blog/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/blog/templates/change_group_photo.html" beforeDir="false" afterPath="$PROJECT_DIR$/project/blog/templates/edit_group.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/blog/templates/create_group.html" beforeDir="false" afterPath="$PROJECT_DIR$/project/blog/templates/create_group.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/blog/templates/groups.html" beforeDir="false" afterPath="$PROJECT_DIR$/project/blog/templates/groups.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/blog/templates/message.html" beforeDir="false" afterPath="$PROJECT_DIR$/project/blog/templates/message.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/blog/templates/channel.html" beforeDir="false" afterPath="$PROJECT_DIR$/project/blog/templates/channel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/blog/templates/yes_or_not.html" beforeDir="false" afterPath="$PROJECT_DIR$/project/blog/templates/yes_or_not.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/blog/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/blog/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/blog/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/blog/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/project/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/media/AccountPhotos/img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/templates/components/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/project/templates/components/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/media/channelPhotos/img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/media/channelPhotos/img_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/media/channelPhotos/img_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/media/channelPhotos/samsung.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/templates/components/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/project/templates/components/footer.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +172,8 @@
       <workItem from="1715186878084" duration="514000" />
       <workItem from="1715187454952" duration="256000" />
       <workItem from="1715189243139" duration="2663000" />
-      <workItem from="1715231171891" duration="17254000" />
+      <workItem from="1715231171891" duration="17417000" />
+      <workItem from="1715344811048" duration="8862000" />
     </task>
     <servers />
   </component>
