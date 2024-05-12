@@ -13,7 +13,7 @@
             <div class="card-body">
                 <div class="section-title">
                     <div><a href="{% url 'edit_group' group.pk %}"><img
-                            src="{% if group.photo %}{{ group.photo.url }}{% endif %}"
+                            src="{% if group.photo %}{{ group.photo.url }}{% else %}https://avatars.mds.yandex.net/i?id=adc64fa49b3479a0bf526527b9f2ba882ba3c8e9-10928745-images-thumbs&n=13{% endif %}"
                             style="width:120px; height:120px; border-radius:120px"
                             alt=""></a></div>
                     <div class="d-flex justify-content-between col-11">

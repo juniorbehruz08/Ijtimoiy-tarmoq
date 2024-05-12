@@ -27,17 +27,26 @@
         <div class="d-flex justify-content-end">
             <div style="width:70%">
                 {% if message.is_share == False %}
-                    <h3 style="border: 1px solid grey; padding:10px; border-radius:10px; opacity: 0.5;">{{ message.text }}
-                    </h3>
-                {% else %}
-                    <div class="card mb-1" style="border: 1px solid grey; padding:10px; border-radius:10px;">
-                        <a href="{% url 'article_detail' message.url %}">
-                            <img style="width: 100%" class="img-fluid h-100" src="{{ message.image }}" alt="">
-                        </a>
-                        <div class="">
-                            <h5>{{ message.text }}</h5>
-                            <h5><a href="{% url 'article_detail' message.url %}">More Information</a></h5>
+                    <div class="card mb-2" style="border: 1px solid grey; border-radius:10px;">
+                            {% if message.photo %}
+                            <img class="card-img-top" style="padding: 2px; {% if message.text %}border-top-left-radius: 10px; border-top-right-radius:10px;{% else %}border-radius:10px{% endif %}" src="{{ message.photo.url }}" alt="">
+                            {% endif %}
+                            {% if message.text != None %}
+                            <h3 style="margin-left:8px; margin-bottom: 5px;  opacity: 0.5;">{{ message.text }}</h3>
+                            {% endif %}
                         </div>
+                {% else %}
+                    <div class="d-flex justify-content-end">
+                        <div class="card mb-2" style="width:100%; border: 1px solid grey; border-radius:10px;">
+                            {% if message.image %}
+                                <a href="{% url 'article_detail' message.url %}">
+                                    <img class="card-img-top" style="padding: 2px; border-top-left-radius: 10px; border-top-right-radius:10px" src="{{ message.image }}" alt="">
+                                </a>
+                            {% endif %}
+                            <h5 style="margin-left:10px"><a style="color: blue" href="{% url 'article_detail' message.url %}">More Information</a></h5>
+                            <h3 style="margin-left:5px; margin-bottom: 5px; padding:5px; opacity: 0.5;">{{ message.text }}</h3>
+                        </div>
+
                     </div>
                 {% endif %}
             </div>
@@ -45,24 +54,36 @@
     {% endfor %}
 </div>
 
-<div class="container fixed-top" style="margin-top:800px">
-    <form action="" method="get">
-        <div class="d-flex justify-content-between">
-            <div style="width:85%">
-                {% csrf_token %}
-                <input type="text" name="saved" class="form-control rounded">
-            </div>
-            <div>
-                <button type="submit" class="btn btn-success rounded">LEAVE MESSAGE</button>
-            </div>
-        </div>
-    </form>
+<div class="container fixed-top" style="margin-top:720px">
+        <form action="" method="post" enctype="multipart/form-data">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex" style="width:85%">
+                        {% csrf_token %}
+                        <input type="text" name="message" placeholder="Message" class="form-control rounded"
+                               style="margin-right:5px; margin-top:100px">
+                        <input type="file" name="photo" class="form-control rounded"
+                               style="width: 195px; margin-left:5px; margin-top:100px">
+                    </div>
+                    <div style="margin-top:100px">
+                        <button type="submit" class="btn btn-success rounded">LEAVE MESSAGE</button>
+                    </div>
+                </div>
+        </form>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        window.scrollTo(0, document.body.scrollHeight);
-    });
-</script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    </script>
+    <script>
+    // Function to scroll to the bottom of the page
+    function scrollToBottom() {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    // Call the function when the page is fully loaded
+    window.onload = scrollToBottom;
+  </script>
 </body>
 </html>
 

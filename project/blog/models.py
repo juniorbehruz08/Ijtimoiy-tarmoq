@@ -112,7 +112,7 @@ class Chat(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return f'{self.user2}'
+        return f'{self.user2}: {self.user1}'
 
     class Meta:
         verbose_name = 'chat'
@@ -123,6 +123,7 @@ class Message(models.Model):
     message = models.CharField(max_length=1000, verbose_name='message')
     url = models.CharField(max_length=500, default='')
     image = models.CharField(max_length=500, verbose_name='image', default='')
+    photo = models.ImageField(upload_to='message_photo', blank=True, null=True, verbose_name='photo')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='time')
@@ -178,8 +179,9 @@ class Advertisement(models.Model):
 
 
 class Saved(models.Model):
-    text = models.CharField(max_length=1000, verbose_name='Saved Message')
+    text = models.CharField(max_length=1000, verbose_name='Saved Message', null=True, blank=True)
     url = models.CharField(max_length=500, default='')
+    photo = models.ImageField(upload_to='saved_message', verbose_name='photo', blank=True, null=True)
     image = models.CharField(max_length=500, verbose_name='image', default='')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='saved')
     is_share = models.BooleanField(default=False, verbose_name='Is share')
@@ -223,8 +225,9 @@ class GroupMember(models.Model):
 
 class GroupMessage(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='messages')
-    message = models.CharField(max_length=1000, verbose_name='Message')
+    message = models.CharField(max_length=1000, verbose_name='Message', null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages')
+    photo = models.ImageField(upload_to='group_message_photo', blank=True, null=True, verbose_name='photo')
     is_share = models.BooleanField(default=False, verbose_name='Is share')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='time')
     objects = models.Manager()

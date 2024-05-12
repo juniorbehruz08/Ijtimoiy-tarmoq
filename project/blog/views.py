@@ -326,21 +326,22 @@ def message(request, chat_slug):
 
 
 def save_message(request, slug):
+    print(request.POST)
+    print(request.FILES)
     chat = Chat.objects.get(slug=slug)
     if request.method == 'POST':
-        form = MessageForm(data=request.POST)
-        if form.is_valid():
-            data = form.save(commit=False)
-            data.user = request.user
-            data.chat = Chat.objects.get(slug=slug)
+        if request.FILES.get('photo') and request.POST.get('message'):
+            photo = request.FILES.get('photo')
+            data = Message.objects.create(user=request.user, message=request.POST['message'], chat=chat, photo=photo)
             data.save()
-        else:
-            pass
+        elif request.FILES.get('photo'):
+            data = Message.objects.create(user=request.user, photo=request.FILES['photo'], chat=chat)
+            data.save()
+        elif request.POST.get('message'):
+            data = Message.objects.create(user=request.user, message=request.POST['message'], chat=chat)
+            data.save()
 
-    else:
-        pass
-
-    return redirect('message', chat.slug)
+        return redirect('message', chat.slug)
 
 
 def add_chat(request):
@@ -622,8 +623,17 @@ def favourite(request):
 
 
 def saved_message(request):
-    a = request.GET.get('saved')
-    if a and request.user.is_authenticated:
+    a = request.POST.get('message')
+    photo = request.FILES.get('photo')
+    if a and photo:
+        a = Saved.objects.create(text=a, user=request.user, photo=photo)
+        a.save()
+        return redirect('saved_message')
+    elif photo:
+        a = Saved.objects.create(photo=photo, user=request.user)
+        a.save()
+        return redirect('saved_message')
+    elif a:
         a = Saved.objects.create(text=a, user=request.user)
         a.save()
         return redirect('saved_message')
@@ -649,9 +659,11 @@ def share_post(request, article_slug):
                                    chat=Chat.objects.get(slug=b[1]), image=image, url=f'{article.slug}')
         c.save()
         return redirect('message', b[1])
-
     if a == 'saved':
-        b = Saved.objects.create(text=article.title, user=request.user, is_share=True, image=article.photo.url, url=f'{article.slug}')
+        if article.photo:
+            b = Saved.objects.create(text=article.title, user=request.user, is_share=True, image=article.photo.url, url=f'{article.slug}')
+        else:
+            b = Saved.objects.create(text=article.title, user=request.user, is_share=True, image='https://avatars.mds.yandex.net/i?id=adc64fa49b3479a0bf526527b9f2ba882ba3c8e9-10928745-images-thumbs&n=13', url=f'{article.slug}')
         b.save()
         return redirect('saved_message')
     Chats = []
@@ -699,19 +711,22 @@ def delete_invalid_group(request):
 
 def group_message(request, pk):
     group = Group.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = GroupMessageForm(request.POST)
-        if form.is_valid():
-            data = form.save(commit=False)
-            data.user = request.user
-            data.group = group
-            data.save()
-            return redirect('group_message', pk)
+    if request.POST.get('message') and request.FILES.get('photo'):
+        data = GroupMessage.objects.create(user=request.user, photo=request.FILES.get('photo'), group=group, message=request.POST.get('message'))
+        data.save()
+        return redirect('group_message', pk)
+    elif request.method == 'POST' and request.FILES.get('photo'):
+        data = GroupMessage.objects.create(user=request.user, photo=request.FILES.get('photo'), group=group)
+        data.save()
+        return redirect('group_message', pk)
+    elif request.method == 'POST' and request.POST.get('message'):
+        data = GroupMessage.objects.create(user=request.user, message=request.POST.get('message'), group=group)
+        data.save()
+        return redirect('group_message', pk)
     else:
 
         context = {
             'title': 'Group Message',
-            'form': GroupMessageForm(),
             'messages': GroupMessage.objects.filter(group=group),
             'group': group,
             'members': group.Members.all()
@@ -784,10 +799,13 @@ def edit_group(request, pk):
         elif group_name:
             group.group_name = group_name
             group.save()
+            return redirect('groups')
+        elif photo:
+            group.photo = photo
+            group.save()
+            return redirect('groups')
         else:
-            return redirect('edit_group')
-
-        return render(request, 'edit_group.html', {'title': 'Edit Group'})
+            return render(request, 'edit_group.html', {'title': 'Edit Group'})
 
 
 
@@ -814,8 +832,8 @@ def channels(request):
     return render(request, 'channel.html', context)
 
 
-def subscribe(request, channel):
-    channel = Channel.objects.get(channel_name=channel)
+def subscribe(request, pk):
+    channel = Channel.objects.get(pk=pk)
     try:
         a = ChannelMember.objects.get(user=request.user, channel=channel)
         a.delete()
@@ -846,10 +864,21 @@ def edit_channel(request, pk):
         title = request.POST.get('group_name')
         photo = request.FILES.get('photo')
         data = Channel.objects.get(pk=pk)
-        data.channel_name = title
-        data.photo = photo
-        data.save()
-        return redirect('channels')
+        if title and photo:
+            data.channel_name = title
+            data.photo = photo
+            data.save()
+            return redirect('channels')
+        elif title:
+            data.channel_name = title
+            data.save()
+            return redirect('channels')
+        elif photo:
+            data.photo = photo
+            data.save()
+            return redirect('channels')
+        else:
+            return redirect('channels')
     else:
         context = {
             'title': 'Edit Channel',
@@ -876,7 +905,6 @@ def channel_content_save(request, pk):
         data = ChannelContent.objects.create(content=request.POST.get('content'), channel=channel, image=request.FILES.get('photo'))
         data.save()
         return redirect('channel_content', pk)
-    return redirect('channel_content', pk)
 
 
 def delete_channel(request, pk):

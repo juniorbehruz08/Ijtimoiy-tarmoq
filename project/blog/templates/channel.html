@@ -35,12 +35,12 @@
                 {% if title != 'My Channels' %}
                     {% if title == 'Other Channels' %}
                         {% if request.user == i.Members.all.first.user %}
-                            <div style="margin-top: 20px"><a href="{% url 'subscribe' i.channel_name %}"><button class="btn btn-danger rounded">Unsubscribe</button></a></div>
+                            <div style="margin-top: 20px"><a href="{% url 'subscribe' i.pk %}"><button class="btn btn-danger rounded">Unsubscribe</button></a></div>
                         {% else %}
-                            <div style="margin-top: 20px"><a href="{% url 'subscribe' i.channel_name %}"><button class="btn btn-danger rounded">Subscribe</button></a></div>
+                            <div style="margin-top: 20px"><a href="{% url 'subscribe' i.pk %}"><button class="btn btn-danger rounded">Subscribe</button></a></div>
                         {% endif %}
                     {% elif title == 'Subscriptions' %}
-                        <div style="margin-top: 20px"><a href="{% url 'subscribe' i.channel_name %}"><button class="btn btn-danger rounded">Unsubscribe</button></a></div>
+                        <div style="margin-top: 20px"><a href="{% url 'subscribe' i.pk %}"><button class="btn btn-danger rounded">Unsubscribe</button></a></div>
                     {% endif %}
                     {% endif %}
                 <h4 style="margin-top: 28px">{{ i.total_follower }}</h4>

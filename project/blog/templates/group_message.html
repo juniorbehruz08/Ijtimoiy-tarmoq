@@ -43,7 +43,7 @@
     <div class="dropdown">
         <input type="checkbox" id="dropdownCheckbox">
         <label for="dropdownCheckbox" style="border-radius:15px; font-size:50px; font-weight: bold;  padding: 5px; width: 800px; background-color:whitesmoke"><img
-               style="height: 60px; width: 60px; border-radius: 60px" src="{{ group.photo.url }}" alt="">{{ group.group_name }}</label>
+               style="height: 60px; width: 60px; border-radius: 60px" src="{% if group.photo %}{{ group.photo.url }}{% else %}https://avatars.mds.yandex.net/i?id=adc64fa49b3479a0bf526527b9f2ba882ba3c8e9-10928745-images-thumbs&n=13{% endif %}" alt="">{{ group.group_name }}</label>
         <div class="dropdown-content card" style="border-radius: 20px; margin-left: -400px;">
             {% for member in members %}
                 <h2 style="text-align: left;"><a style="color:black; text-align: left; opacity: 0.5" href="{% url 'view_account' member.user.username %}">{{ member.user.username }}</a>
@@ -74,25 +74,37 @@
         </div>
         {% else %}
         <div class="d-flex justify-content-end">
-            <div style="width:70%">
-            <h3 style="border: 1px solid grey; padding:10px; border-radius:10px; opacity: 0.5;">{{ message.message }}
-            </h3>
-            <p style="font-size:14px">
-                {{ message.created_date }}
-            </p>
+            <div style="width: 70%">
+                <div class="card mb-2" style="border: 1px solid grey; border-radius:10px;">
+                    {% if message.photo %}
+                        <img class="card-img-top" style="padding: 2px; {% if message.message %}border-top-left-radius: 10px; border-top-right-radius:10px;{% else %}border-radius:10px{% endif %}" src="{{ message.photo.url }}" alt="">
+                    {% endif %}
+                    {% if message.message != None %}
+                        <h3 style="padding:5px; margin-top: -4px; margin-bottom: -4px; margin-left: 5px; opacity: 0.5;">{{ message.message }}</h3>
+                    {% endif %}
+                </div>
+                <p style="font-size:14px;">
+                    {{ message.created_date }}
+                </p>
             </div>
         </div>
         {% endif %}
         {% else %}
         {% if message.is_share == False %}
         <div class="d-flex justify-content-start">
-            <div style="width:70%">
-                <b style=" font-size:14px; border:1px solid gray; padding: 2px; border-radius: 5px; border-bottom-left-radius:0px; border-bottom-right-radius: 0px"><a
-                        href="{% url 'view_account' message.user.username %}" style="color:black; opacity: 0.5">{{ message.user.username }}</a></b>
-            <h3 style="border: 1px solid grey; padding:10px; border-radius:10px; opacity: 0.5; border-top-left-radius: 0px">{{ message.message }}</h3>
-            <p style="font-size:14px">
-                {{ message.created_date }}
-            </p>
+            <div style="width: 70%">
+                <b style=" font-size:14px; border:1px solid gray; padding: 2px; border-radius: 5px; border-bottom-left-radius:0px; border-bottom-right-radius: 0px"><a style="color:darkgray" href="{% url 'view_account' message.user.username %}">{{ message.user.username }}</a></b>
+                <div class="card mb-2" style="border: 1px solid grey; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px;">
+                    {% if message.photo %}
+                        <img class="card-img-top" style="padding: 2px; {% if message.message %}border-top-left-radius: 10px; border-top-right-radius:10px;{% else %}border-radius:10px{% endif %}" src="{{ message.photo.url }}" alt="">
+                    {% endif %}
+                    {% if message.message != None %}
+                        <h3 style="padding:5px; margin-top: -4px; margin-bottom: -4px; margin-left: 5px; opacity: 0.5;">{{ message.message }}</h3>
+                    {% endif %}
+                </div>
+                <p style="font-size:14px;">
+                    {{ message.created_date }}
+                </p>
             </div>
         </div>
         {% else %}
@@ -111,23 +123,35 @@
         {% endif %}
         {% endfor %}
     </div>
-    <div class="container fixed-top" style="margin-top:800px">
-        <form action="" method="post">
-            <div class="d-flex justify-content-between">
-                <div style="width:85%">
-                    {% csrf_token %}
-                    {{ form.as_p }}
+    <div class="container fixed-top" style="margin-top:740px">
+        <form action="" method="post" enctype="multipart/form-data">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex" style="width:85%">
+                        {% csrf_token %}
+                        <input type="text" name="message" placeholder="Message" class="form-control rounded"
+                               style="margin-right:5px; margin-top:100px">
+                        <input type="file" name="photo" class="form-control rounded"
+                               style="width: 195px; margin-left:5px; margin-top:100px">
+                    </div>
+                    <div style="margin-top:100px">
+                        <button type="submit" class="btn btn-success rounded">LEAVE MESSAGE</button>
+                    </div>
                 </div>
-                <div style="margin-top:32px">
-                    <button type="submit" class="btn btn-success rounded">LEAVE MESSAGE</button>
-                </div>
-            </div>
         </form>
     </div>
 </div>
-<script>
-        document.addEventListener("DOMContentLoaded", function() {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
             window.scrollTo(0, document.body.scrollHeight);
         });
-</script>
+    </script>
+    <script>
+    // Function to scroll to the bottom of the page
+    function scrollToBottom() {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    // Call the function when the page is fully loaded
+    window.onload = scrollToBottom;
+  </script>
 </body>
