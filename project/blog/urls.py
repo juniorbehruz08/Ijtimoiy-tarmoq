@@ -6,7 +6,6 @@ urlpatterns = [
     path('HomePage/', HomePage, name='HomePage'),
     path('logout/', exit, name='logout'),
     path('register/', register, name='register'),
-    path('profile/', profile, name='profile'),
     path('add_article', add_article, name='add_article'),
     path('categories/', category, name='categories'),
     path('category/<slug:slug>/', category_page, name='category_page'),

@@ -1,21 +1,17 @@
 {% extends 'base.html' %}
 
 {% block title %}
-{{ title }}
+    {{ title }}
 {% endblock title %}
 
 {% block main %}
-<p class="p-1"></p>
-{% for user in users %}
-<div class="col-12">
-    <div class="card-body">
-        <div class="section-title">
-            {% if request.user != i %}
-            <h1 class="font-weight-bold" style="margin-left:100px"><a href="?user={{ user }}">{{ user }}</a><br>
-                <h1><a href=""></a></h1></h1>
-            {% endif %}
+<div class="container" style="margin-top:200px">
+    {% for user in users %}
+        {% if user != request.user %}
+        <div class="card col-12 d-flex justify-content-start mb-3" style="border-radius: 10px">
+            <h1 class="font-weight-bold" style="margin-left:50px"><a href="?user={{ user }}">{{ user.username }}</a></h1>
         </div>
-    </div>
+        {% endif %}
+    {% endfor %}
 </div>
-{% endfor %}
 {% endblock main %}

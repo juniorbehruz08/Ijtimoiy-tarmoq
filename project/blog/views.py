@@ -386,48 +386,6 @@ def add_chat(request):
     return render(request, 'add_chat.html', context)
 
 
-def profile(request):
-    sort = request.GET.get('sort')
-    image = []
-    views = []
-    if sort:
-        article = Article.objects.filter(user=request.user).order_by(sort)
-    else:
-        article = Article.objects.filter(user=request.user).order_by('-created_date')
-    a = AccountPhoto.objects.filter(user=request.user)
-    total_article = len(Article.objects.filter(user=request.user))
-    b = Article.objects.filter(user=request.user)
-    for i in b:
-        views.append(i.views)
-
-    total_views = sum(views)
-
-    liked = Liked.objects.filter(user=request.user)
-    liked_article = []
-    for i in liked:
-        liked_article.append(i.article)
-
-    for i in a:
-        image.append(i.photo.url)
-        break
-    if image:
-        photo = image[0]
-    else:
-        photo = 'https://alumni.tcnj.edu/wp-content/uploads/sites/16/2022/06/user-icon-placeholder.png'
-
-    context = {
-        'title': 'Profile',
-        'articles': article,
-        'most_viewed': article.order_by('-views'),
-        'image': photo,
-        'total_article': total_article,
-        'total_views': total_views,
-        'liked_article': liked_article
-    }
-
-    return render(request, 'profile.html', context)
-
-
 def save_photo(request):
     if request.method == 'POST':
         form = PhotoForm(files=request.FILES)
@@ -438,9 +396,9 @@ def save_photo(request):
             salom = form.save(commit=False)
             salom.user = request.user
             salom.save()
-            return redirect('profile')
+            return redirect('view_account', request.user.username)
         else:
-            return redirect('profile')
+            return redirect('view_account', request.user.username)
 
     context = {
         'form': PhotoForm(request.FILES, request.POST),
@@ -474,6 +432,7 @@ def view_account(request, username):
         liked = Liked.objects.filter(user=request.user)
         for i in liked:
             liked_article.append(i.article)
+    most_viewed = Article.objects.filter(user=user).order_by('-views').first()
 
     context = {
         'articles': articles,
@@ -482,7 +441,9 @@ def view_account(request, username):
         'user': user,
         'total_article': total_article,
         'total_views': sum(views),
-        'liked_article': liked_article
+        'liked_article': liked_article,
+        'most_viewed': most_viewed,
+        'activate_active': 'active'
     }
     return render(request, 'view_account.html', context)
 
@@ -604,9 +565,9 @@ def photo_delete(request):
         user = request.user
         photo = AccountPhoto.objects.get(user=user)
         photo.delete()
-        return redirect('profile')
+        return redirect('view_account', request.user.username)
     except:
-        return redirect('profile')
+        return redirect('view_account', request.user.username)
 
 
 def favourite(request):
